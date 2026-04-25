@@ -26,8 +26,8 @@ export default function App() {
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/scan"      element={<ScanPage />} />
-          <Route path="/game"      element={<GamePage />} />
+          <Route path="/scan" element={<ScanPage />} />
+          <Route path="/game" element={<GamePage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
