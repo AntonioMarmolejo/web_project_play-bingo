@@ -1,0 +1,288 @@
+.page { max-width: 1000px; }
+
+.header { margin-bottom: 36px; }
+.title { font-size: 2rem; letter-spacing: -1px; margin-bottom: 6px; }
+.title span { color: var(--accent); }
+.subtitle { font-size: 0.85rem; color: var(--muted); }
+
+/* Lobby */
+.lobbyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.lobbyCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.18s;
+}
+
+.lobbyCard:hover { border-color: rgba(108,99,255,0.4); }
+
+.lobbyIcon { font-size: 2rem; }
+.lobbyCardTitle { font-size: 1.1rem; }
+.lobbyCardDesc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+.joinRow {
+  display: flex;
+  gap: 8px;
+}
+
+.joinInput {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.85rem;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  outline: none;
+  flex: 1;
+  transition: border-color 0.18s;
+}
+.joinInput:focus { border-color: var(--accent); }
+.joinInput::placeholder { color: var(--muted); }
+
+.btnPrimary {
+  background: var(--accent);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 18px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: opacity 0.18s;
+}
+.btnPrimary:hover { opacity: 0.85; }
+
+/* Game header */
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.roomCode {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-right: 12px;
+}
+
+.playerCount {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.gameHeaderRight {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btnCall {
+  background: var(--accent4);
+  color: #0a0a0f;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 18px;
+  border-radius: 10px;
+  transition: opacity 0.18s;
+}
+.btnCall:hover { opacity: 0.85; }
+
+.btnLeave {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.18s, color 0.18s;
+}
+.btnLeave:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* Game layout */
+.gameLayout {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px;
+  gap: 20px;
+  align-items: start;
+}
+
+.panelLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+/* Numbers panel */
+.numbersPanel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 16px;
+}
+
+.lastNum {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 3rem;
+  color: var(--accent4);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.lastLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.numBubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.numBubble {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(108,99,255,0.15);
+  border: 1px solid rgba(108,99,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Bingo card */
+.cardPanel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.bingoCard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.colHeader {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--accent2);
+  padding: 6px 0;
+}
+
+.bingoCell {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+
+.marked {
+  background: rgba(108,99,255,0.2);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.lastMarked {
+  background: rgba(249,202,36,0.2);
+  border-color: var(--accent4);
+  color: var(--accent4);
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(249,202,36,0.25);
+}
+
+.free {
+  background: rgba(67,233,123,0.12);
+  border-color: var(--accent3);
+  color: var(--accent3);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* Players */
+.playersPanel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 16px;
+}
+
+.playerList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.playerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+
+.meRow {
+  background: rgba(108,99,255,0.1);
+  border-color: rgba(108,99,255,0.3);
+  color: var(--text);
+}
+
+.playerDot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.meTag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--accent);
+  margin-left: auto;
+}
+
+@media (max-width: 700px) {
+  .gameLayout { grid-template-columns: 1fr; }
+  .lobbyGrid { grid-template-columns: 1fr; }
+}

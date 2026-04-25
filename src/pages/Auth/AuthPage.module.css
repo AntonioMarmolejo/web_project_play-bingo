@@ -1,0 +1,143 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.brand span { color: var(--accent); }
+
+.tagline {
+  font-size: 0.83rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.tabs {
+  display: flex;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 7px;
+  transition: all 0.18s;
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+.tab:hover { color: var(--text); }
+
+.tabActive {
+  background: var(--accent);
+  color: white;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.88rem;
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  transition: border-color 0.18s;
+  outline: none;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: var(--accent);
+}
+
+.input::placeholder { color: var(--muted); }
+
+.error {
+  font-size: 0.78rem;
+  color: var(--accent2);
+  background: rgba(255,101,132,0.08);
+  border: 1px solid rgba(255,101,132,0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.submit {
+  background: var(--accent);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px;
+  border-radius: 10px;
+  transition: opacity 0.18s, transform 0.18s;
+  margin-top: 4px;
+}
+
+.submit:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

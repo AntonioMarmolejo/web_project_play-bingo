@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BingoScan — Documentación del Proyecto</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3e;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --accent4: #f9ca24;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --card: #16161f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-logo .name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .sidebar-logo .sub {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .nav-section {
+    padding: 8px 24px 4px;
+    font-size: 0.65rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color: var(--text);
+    background: rgba(108,99,255,0.08);
+    border-left-color: var(--accent);
+  }
+
+  .nav-item .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    min-width: 20px;
+  }
+
+  /* ─── MAIN ─── */
+  .main {
+    margin-left: 240px;
+    padding: 48px 56px;
+    max-width: 1100px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: 'BINGO';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 9rem;
+    font-weight: 800;
+    color: rgba(108,99,255,0.06);
+    pointer-events: none;
+    letter-spacing: -8px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .pill.green { border-color: var(--accent3); color: var(--accent3); }
+  .pill.pink { border-color: var(--accent2); color: var(--accent2); }
+  .pill.yellow { border-color: var(--accent4); color: var(--accent4); }
+  .pill.purple { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    margin-bottom: 80px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(108,99,255,0.12);
+    border: 1px solid rgba(108,99,255,0.3);
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+
+  .section-title .tag {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ─── CARDS ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title .icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .icon-purple { background: rgba(108,99,255,0.15); }
+  .icon-green { background: rgba(67,233,123,0.12); }
+  .icon-pink { background: rgba(255,101,132,0.12); }
+  .icon-yellow { background: rgba(249,202,36,0.12); }
+
+  .card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .card ul li {
+    font-size: 0.84rem;
+    color: var(--muted);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+
+  /* ─── USER STORIES ─── */
+  .story-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .story-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(108,99,255,0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .story-text {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .story-text strong { color: var(--accent2); }
+
+  .priority {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .p-alta { background: rgba(255,101,132,0.15); color: var(--accent2); border: 1px solid rgba(255,101,132,0.3); }
+  .p-media { background: rgba(249,202,36,0.1); color: var(--accent4); border: 1px solid rgba(249,202,36,0.25); }
+  .p-baja { background: rgba(67,233,123,0.1); color: var(--accent3); border: 1px solid rgba(67,233,123,0.25); }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    overflow-x: auto;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+  }
+
+  .flow-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .flow-node {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 0.78rem;
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    min-width: 130px;
+    max-width: 160px;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .flow-node:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(108,99,255,0.15);
+  }
+
+  .flow-node.start {
+    background: rgba(108,99,255,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+    border-radius: 100px;
+  }
+
+  .flow-node.end {
+    background: rgba(67,233,123,0.12);
+    border-color: var(--accent3);
+    color: var(--accent3);
+    font-weight: 600;
+    border-radius: 100px;
+  }
+
+  .flow-node.decision {
+    background: rgba(249,202,36,0.08);
+    border-color: var(--accent4);
+    color: var(--accent4);
+    border-style: dashed;
+    transform: rotate(0deg);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    width: 120px; height: 72px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 0;
+    padding: 0;
+    font-size: 0.72rem;
+  }
+
+  .flow-node.process-a { border-color: rgba(108,99,255,0.5); color: var(--text); }
+  .flow-node.process-b { border-color: rgba(255,101,132,0.4); color: var(--text); }
+  .flow-node.process-c { border-color: rgba(67,233,123,0.4); color: var(--text); }
+  .flow-node.process-d { border-color: rgba(249,202,36,0.4); color: var(--text); }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--border);
+    font-size: 1.1rem;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  .flow-arrow-down {
+    display: flex;
+    justify-content: center;
+    color: var(--border);
+    font-size: 1.1rem;
+    padding: 4px 0;
+  }
+
+  .flow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 2px 0;
+  }
+
+  /* ─── ARCH DIAGRAM ─── */
+  .arch-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+  }
+
+  .arch-layer {
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .arch-layer-label {
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    background: var(--card);
+    padding: 0 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .arch-items {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .arch-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .arch-box .tech {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+  }
+
+  .arch-box .desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .arch-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -34px;
+    top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.2);
+  }
+
+  .timeline-dot.pink { background: var(--accent2); box-shadow: 0 0 0 3px rgba(255,101,132,0.2); }
+  .timeline-dot.green { background: var(--accent3); box-shadow: 0 0 0 3px rgba(67,233,123,0.2); }
+  .timeline-dot.yellow { background: var(--accent4); box-shadow: 0 0 0 3px rgba(249,202,36,0.2); }
+
+  .timeline-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .timeline-span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .timeline-tasks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .task-chip {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── SUMMARY TABLE ─── */
+  .sum-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+
+  .sum-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sum-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .sum-table tr:hover td { background: rgba(108,99,255,0.04); }
+
+  .sum-table .order-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .sum-table .doc-name {
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .sum-table .doc-desc {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 64px 0;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .story-card { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.2rem; }
+    .flow-row { flex-wrap: wrap; }
+  }
+
+  /* ─── SCAN FLOW SPECIAL ─── */
+  .scan-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .scan-step {
+    flex: 1;
+    padding: 24px 20px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .scan-step:last-child { border-right: none; }
+
+  .scan-step:hover { background: rgba(108,99,255,0.05); }
+
+  .scan-step .step-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .scan-step .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .scan-step .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+  }
+
+  .scan-step .step-desc {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .scan-step .step-arrow {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    color: white;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    z-index: 1;
+  }
+
+  .scan-step:last-child .step-arrow { display: none; }
+
+  /* highlight box */
+  .highlight-box {
+    border-left: 3px solid var(--accent);
+    background: rgba(108,99,255,0.07);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.84rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="name">BingoScan</div>
+    <div class="sub">v1.0 · Documentación</div>
+  </div>
+  <div class="nav-section">Documentos</div>
+  <a class="nav-item active" href="#reqs"><span class="num">01</span> Requerimientos</a>
+  <a class="nav-item" href="#stories"><span class="num">02</span> Historias de Usuario</a>
+  <a class="nav-item" href="#flow"><span class="num">03</span> Flujo del Sistema</a>
+  <a class="nav-item" href="#arch"><span class="num">04</span> Diseño Técnico</a>
+  <a class="nav-item" href="#ui"><span class="num">05</span> Diseño Visual</a>
+  <a class="nav-item" href="#plan"><span class="num">06</span> Plan de Desarrollo</a>
+  <a class="nav-item" href="#summary"><span class="num">07</span> Resumen</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge">PROYECTO · 2025</div>
+    <h1>Bingo<span>Scan</span></h1>
+    <p>Plataforma web y móvil para gestión de cartones de bingo. Carga por foto, PDF o digitación manual. Juego en tiempo real para múltiples jugadores.</p>
+    <div class="tech-pills">
+      <span class="pill purple">React</span>
+      <span class="pill purple">React Native</span>
+      <span class="pill green">Node.js</span>
+      <span class="pill green">Express.js</span>
+      <span class="pill green">MongoDB</span>
+      <span class="pill pink">Socket.io</span>
+      <span class="pill pink">Tesseract OCR</span>
+      <span class="pill yellow">Google Vision API</span>
+      <span class="pill yellow">JWT Auth</span>
+      <span class="pill">PDF.js</span>
+      <span class="pill">Cloudinary</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       01 · REQUERIMIENTOS
+  ══════════════════════════════════════ -->
+  <section class="section" id="reqs">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">DOCUMENTO PRINCIPAL</span>
+          Requerimientos
+        </span>
+      </div>
+    </div>
+
+    <!-- Funcionales -->
+    <div class="grid-2" style="margin-bottom:16px">
+      <div class="card">
+        <div class="card-title">
+          <div class="icon icon-purple">📸</div>
+          Carga de Cartones
+        </div>
+        <ul>
+          <li>Fotografiar hoja física con cámara del dispositivo</li>
+          <li>Cargar PDF con múltiples tablas de bingo</li>
+          <li>Digitación manual de números por tabla</li>
+          <li>OCR automático para extraer números de imagen</li>
+          <li>Confirmación/corrección de datos extraídos</li>
+          <li>Soporte para múltiples cartones por partida</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="icon icon-green">🎮</div>
+          Juego en Tiempo Real
+        </div>
+        <ul>
+          <li>Sala de juego con código único de acceso</li>
+          <li>Marcado automático al cantar número</li>
+          <li>Detección automática de bingo ganador</li>
+          <li>Historial de números cantados</li>
+          <li>Múltiples jugadores simultáneos</li>
+          <li>Roles: Administrador / Jugador</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="icon icon-pink">👤</div>
+          Gestión de Usuarios
+        </div>
+        <ul>
+          <li>Registro y autenticación con JWT</li>
+          <li>Perfil de usuario con historial de partidas</li>
+          <li>Creación y administración de salas</li>
+          <li>Invitación de jugadores por enlace</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="icon icon-yellow">⚙️</div>
+          No Funcionales
+        </div>
+        <ul>
+          <li>App Web + App Móvil (iOS / Android)</li>
+          <li>Latencia &lt; 200ms en eventos de juego</li>
+          <li>Disponibilidad 99.9% uptime</li>
+          <li>Soporte offline parcial (ver cartones)</li>
+          <li>OCR con precisión ≥ 92%</li>
+          <li>Escalable a 500 jugadores por sala</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       02 · HISTORIAS DE USUARIO
+  ══════════════════════════════════════ -->
+  <section class="section" id="stories">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">REQUERIMIENTOS → HISTORIAS</span>
+          Historias de Usuario
+        </span>
+      </div>
+    </div>
+
+    <div class="story-card">
+      <span class="story-id">US-01</span>
+      <div class="story-text">Como <strong>jugador</strong>, quiero fotografiar mi hoja de bingo física para que el sistema extraiga automáticamente los números de mis cartones sin tener que digitarlos.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-02</span>
+      <div class="story-text">Como <strong>jugador</strong>, quiero cargar un PDF con varias tablas de bingo para que el sistema identifique y registre cada cartón individualmente.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-03</span>
+      <div class="story-text">Como <strong>jugador</strong>, quiero digitar manualmente los números de un cartón específico cuando la foto no tiene buena calidad.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-04</span>
+      <div class="story-text">Como <strong>jugador</strong>, quiero corregir los números que el OCR extrajo incorrectamente antes de confirmar mi cartón.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-05</span>
+      <div class="story-text">Como <strong>administrador</strong>, quiero crear una sala de juego y obtener un código para compartir con los participantes.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-06</span>
+      <div class="story-text">Como <strong>administrador</strong>, quiero cantar números aleatoriamente y que todos los cartones de los jugadores se marquen en tiempo real automáticamente.</div>
+      <span class="priority p-alta">ALTA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-07</span>
+      <div class="story-text">Como <strong>sistema</strong>, quiero detectar automáticamente cuando un cartón completa bingo y notificar al administrador y jugadores.</div>
+      <span class="priority p-media">MEDIA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-08</span>
+      <div class="story-text">Como <strong>jugador</strong>, quiero ver el historial de números cantados durante la partida para revisar si me perdí alguno.</div>
+      <span class="priority p-media">MEDIA</span>
+    </div>
+    <div class="story-card">
+      <span class="story-id">US-09</span>
+      <div class="story-text">Como <strong>usuario</strong>, quiero ver el historial de mis partidas anteriores y los cartones que usé.</div>
+      <span class="priority p-baja">BAJA</span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       03 · FLUJO DEL SISTEMA
+  ══════════════════════════════════════ -->
+  <section class="section" id="flow">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">MUY IMPORTANTE</span>
+          Flujo del Sistema
+        </span>
+      </div>
+    </div>
+
+    <!-- FLUJO 1: Carga de cartón -->
+    <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">FLUJO A · Carga e Ingreso de Cartón</p>
+    <div class="scan-flow" style="margin-bottom:40px;">
+      <div class="scan-step">
+        <span class="step-icon">📱</span>
+        <div class="step-num">PASO 1</div>
+        <div class="step-title">Seleccionar Método</div>
+        <div class="step-desc">Foto con cámara, subir PDF o digitación manual</div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="scan-step">
+        <span class="step-icon">🔍</span>
+        <div class="step-num">PASO 2</div>
+        <div class="step-title">Procesamiento OCR</div>
+        <div class="step-desc">Google Vision API o Tesseract detecta y extrae números</div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="scan-step">
+        <span class="step-icon">✏️</span>
+        <div class="step-num">PASO 3</div>
+        <div class="step-title">Revisión y Corrección</div>
+        <div class="step-desc">Usuario confirma o edita los números detectados</div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="scan-step">
+        <span class="step-icon">💾</span>
+        <div class="step-num">PASO 4</div>
+        <div class="step-title">Guardar Cartón</div>
+        <div class="step-desc">Cartón validado y guardado en MongoDB</div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="scan-step">
+        <span class="step-icon">✅</span>
+        <div class="step-num">PASO 5</div>
+        <div class="step-title">Listo para Jugar</div>
+        <div class="step-desc">Cartón vinculado al jugador en la sala</div>
+      </div>
+    </div>
+
+    <!-- FLUJO 2: Partida -->
+    <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent2);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">FLUJO B · Desarrollo de la Partida</p>
+    <div class="flow-container">
+      <div class="flow-col" style="align-items:center;width:100%;">
+
+        <!-- Fila 1 -->
+        <div class="flow-row">
+          <div class="flow-node start">Administrador crea Sala</div>
+        </div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-row">
+          <div class="flow-node process-a" style="min-width:200px;">Sistema genera código único</div>
+        </div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-row">
+          <div class="flow-node process-b" style="min-width:200px;">Jugadores ingresan con código</div>
+        </div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-row">
+          <div class="flow-node process-a" style="min-width:220px;">Jugadores cargan sus cartones</div>
+        </div>
+        <div class="flow-arrow-down">↓</div>
+        <div class="flow-row" style="gap:20px; align-items:flex-start; width:100%; justify-content:center; padding:16px 0;">
+
+          <div class="flow-col">
+            <div class="flow-node process-d" style="min-width:160px;">Admin inicia partida</div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-node process-d" style="min-width:160px;">Admin canta número</div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-node process-a" style="min-width:160px;">Socket.io emite evento a todos</div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-node process-c" style="min-width:160px;">Cartones se marcan en tiempo real</div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-node decision">¿Alguien cantó Bingo?</div>
+            <div class="flow-row" style="gap:40px; margin-top:8px;">
+              <div class="flow-col">
+                <div class="flow-label">SÍ</div>
+                <div class="flow-node process-b" style="min-width:120px;">Validar cartón ganador</div>
+                <div class="flow-arrow-down">↓</div>
+                <div class="flow-node end">Fin de Partida</div>
+              </div>
+              <div class="flow-col">
+                <div class="flow-label">NO</div>
+                <div class="flow-node process-d" style="min-width:120px;">Siguiente número</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:20px;">
+      💡 <strong>WebSockets (Socket.io)</strong> es la tecnología clave del flujo B. Cada número cantado se emite como evento a todos los clientes conectados a la sala. El servidor valida el bingo automáticamente comparando el cartón contra los números cantados.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       04 · DISEÑO TÉCNICO
+  ══════════════════════════════════════ -->
+  <section class="section" id="arch">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">ARQUITECTURA</span>
+          Diseño Técnico
+        </span>
+      </div>
+    </div>
+
+    <div class="arch-container">
+
+      <!-- CAPA CLIENTE -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">CAPA CLIENTE · Frontend</div>
+        <div class="arch-items">
+          <div class="arch-box">
+            <strong>React Web App</strong>
+            <span class="tech">React + Vite + TailwindCSS</span>
+            <span class="desc">Interfaz web responsiva. Acceso desde cualquier browser.</span>
+          </div>
+          <div class="arch-box">
+            <strong>React Native App</strong>
+            <span class="tech">Expo · iOS + Android</span>
+            <span class="desc">App móvil. Acceso a cámara para escaneo de cartones.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Estado Global</strong>
+            <span class="tech">Zustand / Redux Toolkit</span>
+            <span class="desc">Manejo de sesión, sala activa y cartones del jugador.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Socket Client</strong>
+            <span class="tech">socket.io-client</span>
+            <span class="desc">Conexión en tiempo real con el servidor de juego.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-connector">⬇ &nbsp; HTTP REST + WebSocket WSS &nbsp; ⬇</div>
+
+      <!-- CAPA API -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">CAPA API · Backend</div>
+        <div class="arch-items">
+          <div class="arch-box">
+            <strong>API REST</strong>
+            <span class="tech">Node.js + Express.js</span>
+            <span class="desc">Autenticación, usuarios, cartones, salas y partidas.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Servidor WebSocket</strong>
+            <span class="tech">Socket.io</span>
+            <span class="desc">Eventos de juego en tiempo real: números, marcados, bingo.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Auth Middleware</strong>
+            <span class="tech">JWT + bcrypt</span>
+            <span class="desc">Validación de tokens en cada petición protegida.</span>
+          </div>
+          <div class="arch-box">
+            <strong>OCR Service</strong>
+            <span class="tech">Google Vision API / Tesseract.js</span>
+            <span class="desc">Extracción de números desde imagen o PDF de cartones.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-connector">⬇ &nbsp; MongoDB Driver + Mongoose &nbsp; ⬇</div>
+
+      <!-- CAPA DATOS -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">CAPA DATOS · Persistencia</div>
+        <div class="arch-items">
+          <div class="arch-box">
+            <strong>MongoDB Atlas</strong>
+            <span class="tech">Base de datos principal</span>
+            <span class="desc">Colecciones: users, rooms, cartones, games, numberHistory</span>
+          </div>
+          <div class="arch-box">
+            <strong>Cloudinary</strong>
+            <span class="tech">Almacenamiento de imágenes</span>
+            <span class="desc">Fotos y PDFs subidos por usuarios. CDN global.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Redis (opcional)</strong>
+            <span class="tech">Cache + Pub/Sub</span>
+            <span class="desc">Estado de sala en memoria para respuesta ultra-rápida.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-connector">⬇ &nbsp; Deploy &nbsp; ⬇</div>
+
+      <!-- CAPA INFRA -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">INFRAESTRUCTURA · Deploy</div>
+        <div class="arch-items">
+          <div class="arch-box">
+            <strong>Vercel / Netlify</strong>
+            <span class="tech">Frontend Web</span>
+            <span class="desc">Deploy automático desde GitHub. CDN global.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Railway / Render</strong>
+            <span class="tech">Backend Node.js</span>
+            <span class="desc">Servidor con soporte para WebSockets persistentes.</span>
+          </div>
+          <div class="arch-box">
+            <strong>Expo EAS</strong>
+            <span class="tech">App Móvil</span>
+            <span class="desc">Build y distribución para iOS App Store y Google Play.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Esquema de base de datos -->
+    <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin:32px 0 14px;">ESQUEMA · Colecciones MongoDB</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><div class="icon icon-purple">👤</div>users</div>
+        <ul>
+          <li>_id, name, email, password</li>
+          <li>role: [admin | player]</li>
+          <li>gamesHistory: [gameId]</li>
+          <li>createdAt, updatedAt</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon icon-green">🏠</div>rooms</div>
+        <ul>
+          <li>_id, code (único), adminId</li>
+          <li>players: [userId]</li>
+          <li>status: [waiting|active|ended]</li>
+          <li>currentGame: gameId</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon icon-pink">🎴</div>cartones</div>
+        <ul>
+          <li>_id, userId, roomId</li>
+          <li>grid: [[5x5 números]]</li>
+          <li>markedNumbers: [nums]</li>
+          <li>sourceType: photo|pdf|manual</li>
+          <li>imageUrl (Cloudinary)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       05 · DISEÑO VISUAL UI/UX
+  ══════════════════════════════════════ -->
+  <section class="section" id="ui">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">UI / UX</span>
+          Diseño Visual
+        </span>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:16px;">
+      <div class="card">
+        <div class="card-title"><div class="icon icon-purple">🎨</div>Identidad Visual</div>
+        <ul>
+          <li>Estilo: Neón oscuro + colores vibrantes</li>
+          <li>Fondo: #0d0d1a (azul muy oscuro)</li>
+          <li>Acento principal: #6c63ff (violeta)</li>
+          <li>Acento juego: #f9ca24 (dorado)</li>
+          <li>Fuente display: Syne (títulos)</li>
+          <li>Fuente body: Instrument Sans</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon icon-green">📱</div>Pantallas Principales</div>
+        <ul>
+          <li>Splash + Onboarding (3 pasos)</li>
+          <li>Login / Registro</li>
+          <li>Dashboard (mis partidas)</li>
+          <li>Escanear / Cargar Cartón</li>
+          <li>Revisión y corrección OCR</li>
+          <li>Sala de Juego (pantalla principal)</li>
+          <li>Pantalla de Victoria 🎉</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Wireframe conceptual del cartón -->
+    <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">WIREFRAME · Pantalla de Juego</p>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Panel izquierdo: números cantados -->
+      <div style="flex:1;min-width:180px;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">NÚMEROS CANTADOS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div style="width:36px;height:36px;background:rgba(108,99,255,0.2);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;color:var(--accent);">15</div>
+          <div style="width:36px;height:36px;background:rgba(108,99,255,0.2);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;color:var(--accent);">32</div>
+          <div style="width:36px;height:36px;background:rgba(108,99,255,0.2);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;color:var(--accent);">7</div>
+          <div style="width:36px;height:36px;background:rgba(249,202,36,0.25);border:2px solid var(--accent4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--accent4);">48</div>
+          <div style="width:36px;height:36px;background:rgba(108,99,255,0.2);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;color:var(--accent);">11</div>
+          <div style="width:36px;height:36px;background:rgba(108,99,255,0.1);border:1px dashed var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--muted);">—</div>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:10px;">Último: <span style="color:var(--accent4);font-weight:700;font-size:0.85rem;">48</span></div>
+      </div>
+
+      <!-- Cartón central -->
+      <div style="flex:2;min-width:220px;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">MI CARTÓN</div>
+        <!-- Header B-I-N-G-O -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px;">
+          <div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent2);font-size:0.9rem;padding:4px;">B</div>
+          <div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);font-size:0.9rem;padding:4px;">I</div>
+          <div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent3);font-size:0.9rem;padding:4px;">N</div>
+          <div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent4);font-size:0.9rem;padding:4px;">G</div>
+          <div style="text-align:center;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent2);font-size:0.9rem;padding:4px;">O</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;">
+          <!-- Row 1 -->
+          <div style="background:rgba(108,99,255,0.25);border:1px solid var(--accent);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;font-weight:600;">15 ✓</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">22</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">41</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">54</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">71</div>
+          <!-- Row 2 -->
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">3</div>
+          <div style="background:rgba(108,99,255,0.25);border:1px solid var(--accent);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;font-weight:600;">32 ✓</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">38</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">60</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">63</div>
+          <!-- Row 3 (FREE) -->
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">9</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">29</div>
+          <div style="background:rgba(67,233,123,0.2);border:1px solid var(--accent3);border-radius:6px;padding:8px;text-align:center;font-size:0.72rem;font-weight:700;color:var(--accent3);">FREE</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">57</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">75</div>
+          <!-- Row 4 -->
+          <div style="background:rgba(108,99,255,0.25);border:1px solid var(--accent);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;font-weight:600;">7 ✓</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">17</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">44</div>
+          <div style="background:rgba(249,202,36,0.2);border:1px solid var(--accent4);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;font-weight:600;color:var(--accent4);">48 ✓</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">68</div>
+          <!-- Row 5 -->
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">14</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">25</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">35</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;color:var(--muted);">52</div>
+          <div style="background:rgba(108,99,255,0.25);border:1px solid var(--accent);border-radius:6px;padding:8px;text-align:center;font-size:0.78rem;font-weight:600;">11 ✓</div>
+        </div>
+      </div>
+
+      <!-- Panel derecho: jugadores -->
+      <div style="flex:1;min-width:140px;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">JUGADORES (4)</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:8px;padding:8px 12px;font-size:0.78rem;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--accent3);border-radius:50%;flex-shrink:0;"></span>Tú</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--accent3);border-radius:50%;flex-shrink:0;"></span>María</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:var(--accent3);border-radius:50%;flex-shrink:0;"></span>Carlos</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:#888;border-radius:50%;flex-shrink:0;"></span>Ana</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       06 · PLAN DE DESARROLLO
+  ══════════════════════════════════════ -->
+  <section class="section" id="plan">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">ROADMAP</span>
+          Plan de Desarrollo
+        </span>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-title">🏗️ Fase 1 — Fundación</div>
+            <span class="timeline-span">Semanas 1–2</span>
+          </div>
+          <div class="timeline-tasks">
+            <span class="task-chip">Setup monorepo</span>
+            <span class="task-chip">Express + MongoDB</span>
+            <span class="task-chip">JWT Auth</span>
+            <span class="task-chip">Models: User, Room, Carton</span>
+            <span class="task-chip">APIs REST base</span>
+            <span class="task-chip">React app scaffold</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot pink"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-title">📸 Fase 2 — OCR y Carga de Cartones</div>
+            <span class="timeline-span">Semanas 3–4</span>
+          </div>
+          <div class="timeline-tasks">
+            <span class="task-chip">Integrar Google Vision API</span>
+            <span class="task-chip">Endpoint upload imagen/PDF</span>
+            <span class="task-chip">Parser de tablas OCR</span>
+            <span class="task-chip">UI revisión y corrección</span>
+            <span class="task-chip">Digitación manual</span>
+            <span class="task-chip">Cloudinary storage</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot green"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-title">⚡ Fase 3 — Juego en Tiempo Real</div>
+            <span class="timeline-span">Semanas 5–6</span>
+          </div>
+          <div class="timeline-tasks">
+            <span class="task-chip">Socket.io server</span>
+            <span class="task-chip">Salas y eventos</span>
+            <span class="task-chip">Lógica de marcado</span>
+            <span class="task-chip">Detección automática de bingo</span>
+            <span class="task-chip">UI sala de juego</span>
+            <span class="task-chip">Historial de números</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot yellow"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-title">📱 Fase 4 — App Móvil</div>
+            <span class="timeline-span">Semanas 7–8</span>
+          </div>
+          <div class="timeline-tasks">
+            <span class="task-chip">Expo React Native</span>
+            <span class="task-chip">Acceso a cámara</span>
+            <span class="task-chip">Sincronización web ↔ móvil</span>
+            <span class="task-chip">UI móvil adaptada</span>
+            <span class="task-chip">Push notifications</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div class="timeline-title">🚀 Fase 5 — QA y Deploy</div>
+            <span class="timeline-span">Semanas 9–10</span>
+          </div>
+          <div class="timeline-tasks">
+            <span class="task-chip">Tests unitarios e integración</span>
+            <span class="task-chip">Testing OCR con fotos reales</span>
+            <span class="task-chip">Deploy backend Railway</span>
+            <span class="task-chip">Deploy frontend Vercel</span>
+            <span class="task-chip">Build móvil EAS</span>
+            <span class="task-chip">Pruebas de carga</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+
+  <!-- ══════════════════════════════════════
+       07 · RESUMEN
+  ══════════════════════════════════════ -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <span class="section-title">
+          <span class="tag">ORDEN CORRECTO</span>
+          Resumen Claro
+        </span>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-bottom:28px;">
+      Este es el orden lógico de documentación y desarrollo. Cada documento alimenta al siguiente. No se puede diseñar sin requerir; no se puede desarrollar sin diseñar.
+    </div>
+
+    <table class="sum-table">
+      <thead>
+        <tr>
+          <th>Orden</th>
+          <th>Documento</th>
+          <th>Qué define</th>
+          <th>Tecnología clave</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="order-num">01</span></td>
+          <td><span class="doc-name">Requerimientos</span><div class="doc-desc">Base de todo el proyecto</div></td>
+          <td class="doc-desc">Qué debe hacer el sistema. Funcionales y no funcionales.</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">02</span></td>
+          <td><span class="doc-name">Historias de Usuario</span><div class="doc-desc">Perspectiva del usuario</div></td>
+          <td class="doc-desc">Cómo el usuario interactuará con cada función.</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">03</span></td>
+          <td><span class="doc-name">Flujo del Sistema</span><div class="doc-desc">🔑 El más importante</div></td>
+          <td class="doc-desc">Cómo se mueven los datos y acciones paso a paso.</td>
+          <td>Socket.io · OCR · REST</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">04</span></td>
+          <td><span class="doc-name">Diseño Técnico</span><div class="doc-desc">Arquitectura</div></td>
+          <td class="doc-desc">Qué tecnologías, capas y cómo se comunican.</td>
+          <td>Node · MongoDB · React</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">05</span></td>
+          <td><span class="doc-name">Diseño Visual</span><div class="doc-desc">UI / UX</div></td>
+          <td class="doc-desc">Cómo se ve y se siente la aplicación.</td>
+          <td>Figma · TailwindCSS</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">06</span></td>
+          <td><span class="doc-name">Plan de Desarrollo</span><div class="doc-desc">Roadmap</div></td>
+          <td class="doc-desc">En qué orden y tiempo se construye cada parte.</td>
+          <td>5 Fases · 10 semanas</td>
+        </tr>
+        <tr>
+          <td><span class="order-num">07</span></td>
+          <td><span class="doc-name">Resumen</span><div class="doc-desc">Este documento</div></td>
+          <td class="doc-desc">Vista general para tomar decisiones y priorizar.</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Stack final -->
+    <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin:36px 0 14px;">STACK TECNOLÓGICO COMPLETO</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><div class="icon icon-purple">🖥️</div>Frontend</div>
+        <ul>
+          <li>React + Vite (Web)</li>
+          <li>React Native + Expo (Móvil)</li>
+          <li>TailwindCSS (estilos)</li>
+          <li>Zustand (estado)</li>
+          <li>socket.io-client</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon icon-green">⚙️</div>Backend</div>
+        <ul>
+          <li>Node.js + Express.js</li>
+          <li>Socket.io (real-time)</li>
+          <li>JWT + bcrypt (auth)</li>
+          <li>Google Vision API (OCR)</li>
+          <li>Multer (file uploads)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon icon-yellow">💾</div>Datos y Deploy</div>
+        <ul>
+          <li>MongoDB Atlas</li>
+          <li>Mongoose (ODM)</li>
+          <li>Cloudinary (imágenes)</li>
+          <li>Railway (backend)</li>
+          <li>Vercel (frontend)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:80px;"></div>
+
+</main>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const id = entry.target.getAttribute('id');
+        const active = document.querySelector(`.nav-item[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
