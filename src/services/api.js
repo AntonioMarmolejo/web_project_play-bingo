@@ -13,7 +13,14 @@ function headers(extra = {}) {
 }
 
 async function handleResponse(res) {
-  const data = await res.json()
+  const text = await res.text()
+  if (!text) throw new Error('El servidor no respondió. ¿Está el backend corriendo?')
+  let data
+  try {
+    data = JSON.parse(text)
+  } catch {
+    throw new Error(`Respuesta inesperada del servidor (${res.status})`)
+  }
   if (!res.ok) throw new Error(data.error ?? `Error ${res.status}`)
   return data
 }
