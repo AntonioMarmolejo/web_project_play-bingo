@@ -282,7 +282,213 @@
   margin-left: auto;
 }
 
+/* Error banner */
+.errorBanner {
+  background: rgba(255, 80, 80, 0.12);
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Bingo banner (animado al aparecer) */
+.bingoBanner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  animation: slideDown 0.3s ease;
+}
+.bingoValid {
+  background: rgba(67, 233, 123, 0.2);
+  border: 1px solid var(--accent3);
+  color: var(--accent3);
+}
+.bingoInvalid {
+  background: rgba(255, 80, 80, 0.15);
+  border: 1px solid rgba(255, 80, 80, 0.5);
+  color: #ff6b6b;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Botón bingo */
+.btnBingo {
+  background: var(--accent3);
+  color: #0a0a0f;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+  transition: opacity 0.18s, transform 0.12s;
+}
+.btnBingo:hover { opacity: 0.85; transform: scale(1.04); }
+
+/* Sala de espera */
+.waitingLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+
+.waitingCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+}
+
+.codeHighlight {
+  font-family: 'DM Mono', monospace;
+  color: var(--accent4);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 3px;
+}
+
+.hostTag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--accent4);
+  margin-left: auto;
+  border: 1px solid rgba(249,202,36,0.4);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.cardTag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--accent3);
+  margin-left: 4px;
+}
+
+.waitingActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.waitingHint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* Selector de cartones en sala de espera */
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.cardOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s;
+  cursor: pointer;
+}
+.cardOption:hover { border-color: rgba(108,99,255,0.4); }
+.cardOptionActive {
+  background: rgba(108,99,255,0.1);
+  border-color: var(--accent);
+}
+
+.cardOptionName {
+  font-size: 0.82rem;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+}
+.cardOptionType {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+}
+
+.noCards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.noCardMsg {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Vista de fin de juego */
+.endedContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  text-align: center;
+}
+
+.endedIcon { font-size: 4rem; }
+
+.endedTitle {
+  font-size: 2.2rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+
+.endedWinners {
+  font-size: 1rem;
+  color: var(--accent4);
+  font-family: 'DM Mono', monospace;
+}
+
+.endedStats {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+}
+
+.endedActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 @media (max-width: 700px) {
   .gameLayout { grid-template-columns: 1fr; }
   .lobbyGrid { grid-template-columns: 1fr; }
+  .waitingLayout { grid-template-columns: 1fr; }
 }
