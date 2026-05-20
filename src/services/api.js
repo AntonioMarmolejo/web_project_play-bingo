@@ -57,11 +57,11 @@ export const cards = {
     }).then(handleResponse)
   },
 
-  save: (grid, sourceType, imageUrl, name) =>
+  save: (grid, sourceType, imageUrl, imagePublicId, name) =>
     fetch(`${BASE}/cards`, {
       method: 'POST',
       headers: headers({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ grid, sourceType, imageUrl, name }),
+      body: JSON.stringify({ grid, sourceType, imageUrl, imagePublicId, name }),
     }).then(handleResponse),
 
   list: () =>
@@ -72,4 +72,10 @@ export const cards = {
       method: 'DELETE',
       headers: headers(),
     }).then(handleResponse),
+}
+
+// ── Rooms ─────────────────────────────────────────────
+export const rooms = {
+  myRooms: () =>
+    fetch(`${BASE}/rooms`, { headers: headers() }).then(handleResponse),
 }

@@ -16,10 +16,10 @@ const useCardStore = create((set, get) => ({
     }
   },
 
-  saveCard: async (grid, sourceType, imageUrl = null, name = 'Mi cartón') => {
+  saveCard: async (grid, sourceType, imageUrl = null, imagePublicId = null, name = 'Mi cartón') => {
     set({ loading: true, error: null })
     try {
-      const { carton } = await cardsApi.save(grid, sourceType, imageUrl, name)
+      const { carton } = await cardsApi.save(grid, sourceType, imageUrl, imagePublicId, name)
       set((state) => ({ cards: [carton, ...state.cards], loading: false }))
       return carton
     } catch (err) {

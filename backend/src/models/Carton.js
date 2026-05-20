@@ -8,7 +8,8 @@ const cartonSchema = new mongoose.Schema(
     grid:       { type: [[mongoose.Schema.Types.Mixed]], required: true },
     markedNumbers: { type: [Number], default: [] },
     sourceType: { type: String, enum: ['photo', 'pdf', 'manual'], required: true },
-    imageUrl:   { type: String, default: null },
+    imageUrl:      { type: String, default: null },
+    imagePublicId: { type: String, default: null },
     name:       { type: String, default: 'Mi cartón' },
   },
   { timestamps: true }

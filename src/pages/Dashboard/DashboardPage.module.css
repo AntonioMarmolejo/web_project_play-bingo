@@ -159,6 +159,12 @@
 
 .btnEnter:hover { background: rgba(108,99,255,0.1); }
 
+.emptyMsg {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 12px 0;
+}
+
 @media (max-width: 640px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .header { flex-direction: column; }

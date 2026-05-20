@@ -34,6 +34,7 @@ export default function ScanPage() {
   const [ocrGrid, setOcrGrid] = useState(EMPTY_GRID)
   const [ocrConf, setOcrConf] = useState(null)   // grid 5x5 de confianza (0-1)
   const [imageUrl, setImageUrl] = useState(null)
+  const [imagePublicId, setImagePublicId] = useState(null)
   const [sourceType, setSourceType] = useState('manual')
 
   // Estado de guardado
@@ -67,6 +68,7 @@ export default function ScanPage() {
       setOcrGrid(result.grid)
       setOcrConf(result.confidence)
       setImageUrl(result.fileUrl)
+      setImagePublicId(result.imagePublicId ?? null)
       setSourceType(result.sourceType)
       setStep('review')
     } catch (err) {
@@ -115,7 +117,7 @@ export default function ScanPage() {
           return isNaN(n) || cell === '' ? null : n
         })
       )
-      await saveCard(normalized, sourceType, imageUrl, cardName)
+      await saveCard(normalized, sourceType, imageUrl, imagePublicId, cardName)
       setStep('done')
     } catch (err) {
       setSaveError(err.message)
@@ -133,6 +135,7 @@ export default function ScanPage() {
     setOcrGrid(EMPTY_GRID)
     setOcrConf(null)
     setImageUrl(null)
+    setImagePublicId(null)
     setSaveError(null)
     setCardName('Mi cartón')
   }

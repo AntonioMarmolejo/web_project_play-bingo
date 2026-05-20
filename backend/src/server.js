@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken'
 import { connectDB } from './config/db.js'
 import authRoutes from './routes/auth.js'
 import cardRoutes from './routes/cards.js'
+import roomRoutes from './routes/rooms.js'
 import { registerGameHandlers } from './socket/gameHandler.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -24,6 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../../uploads')))
 
 app.use('/api/auth',  authRoutes)
 app.use('/api/cards', cardRoutes)
+app.use('/api/rooms', roomRoutes)
 
 app.get('/api/health', (_, res) => res.json({ ok: true, ts: Date.now() }))
 

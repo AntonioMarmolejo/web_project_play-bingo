@@ -1,12 +1,8 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../../store/useAuthStore'
+import { rooms as roomsApi } from '../../services/api'
 import styles from './DashboardPage.module.css'
-
-const MOCK_ROOMS = [
-  { id: '1', code: 'BINGO-4821', players: 6, status: 'active',  date: 'Hoy, 20:30' },
-  { id: '2', code: 'BINGO-1190', players: 4, status: 'waiting', date: 'Hoy, 19:00' },
-  { id: '3', code: 'BINGO-7731', players: 8, status: 'ended',   date: 'Ayer, 15:00' },
-]
 
 const STATUS_LABEL = {
   active:  { text: 'En juego',  color: 'var(--accent3)' },
@@ -14,9 +10,30 @@ const STATUS_LABEL = {
   ended:   { text: 'Terminada', color: 'var(--muted)' },
 }
 
+function formatDate(iso) {
+  if (!iso) return '—'
+  return new Date(iso).toLocaleString('es-MX', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit',
+  })
+}
+
 export default function DashboardPage() {
   const { user } = useAuthStore()
   const navigate = useNavigate()
+
+  const [roomsList, setRoomsList] = useState([])
+  const [stats, setStats] = useState({ cardsCount: 0, roomsPlayed: 0, bingosWon: 0, activeRooms: 0 })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    roomsApi.myRooms()
+      .then(({ rooms, stats }) => {
+        setRoomsList(rooms)
+        setStats(stats)
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <div className={styles.page}>
@@ -41,19 +58,19 @@ export default function DashboardPage() {
       {/* Stats */}
       <div className={styles.stats}>
         <div className={styles.statCard}>
-          <span className={styles.statNum}>3</span>
+          <span className={styles.statNum}>{loading ? '—' : stats.roomsPlayed}</span>
           <span className={styles.statLabel}>Partidas jugadas</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statNum}>1</span>
+          <span className={styles.statNum}>{loading ? '—' : stats.bingosWon}</span>
           <span className={styles.statLabel}>Bingos ganados</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statNum}>7</span>
+          <span className={styles.statNum}>{loading ? '—' : stats.cardsCount}</span>
           <span className={styles.statLabel}>Cartones guardados</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statNum}>1</span>
+          <span className={styles.statNum}>{loading ? '—' : stats.activeRooms}</span>
           <span className={styles.statLabel}>Sala activa</span>
         </div>
       </div>
@@ -61,11 +78,15 @@ export default function DashboardPage() {
       {/* Rooms */}
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Mis Salas</h2>
+        {loading && <p className={styles.emptyMsg}>Cargando...</p>}
+        {!loading && roomsList.length === 0 && (
+          <p className={styles.emptyMsg}>Todavía no has jugado ninguna partida.</p>
+        )}
         <div className={styles.roomList}>
-          {MOCK_ROOMS.map((room) => {
+          {roomsList.map((room) => {
             const s = STATUS_LABEL[room.status]
             return (
-              <div key={room.id} className={styles.roomCard}>
+              <div key={room.code} className={styles.roomCard}>
                 <div className={styles.roomCode}>
                   <span className={styles.roomCodeText}>{room.code}</span>
                   <span
@@ -76,8 +97,8 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className={styles.roomMeta}>
-                  <span>{room.players} jugadores</span>
-                  <span>{room.date}</span>
+                  <span>{room.playersCount} jugadores · {room.calledCount} números</span>
+                  <span>{formatDate(room.createdAt)}</span>
                 </div>
                 {room.status !== 'ended' && (
                   <button
