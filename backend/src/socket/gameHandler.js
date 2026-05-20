@@ -1,5 +1,12 @@
 import Room from '../models/Room.js'
 import Carton from '../models/Carton.js'
+import User from '../models/User.js'
+import { sendPush } from '../services/pushService.js'
+
+async function getPushTokens(userIds) {
+    const users = await User.find({ _id: { $in: userIds }, pushToken: { $ne: null } }).select('pushToken')
+    return users.map((u) => u.pushToken)
+}
 
 // Genera código aleatorio de 4 caracteres (sin caracteres ambiguos)
 function makeCode() {
@@ -104,6 +111,11 @@ export function registerGameHandlers(io, socket) {
             room.status = 'active'
             await room.save()
             io.to(roomCode).emit('game:started', { room: room.toObject() })
+
+            const playerIds = room.players.map((p) => p.userId)
+            getPushTokens(playerIds).then((tokens) =>
+                sendPush(tokens, '¡Comienza el juego! 🎯', `Sala ${roomCode} — ¡Buena suerte!`)
+            )
             callback({ ok: true })
         } catch (err) {
             callback({ ok: false, error: err.message })
@@ -133,6 +145,11 @@ export function registerGameHandlers(io, socket) {
                 number,
                 calledNumbers: room.calledNumbers,
             })
+
+            const playerIds = room.players.map((p) => p.userId)
+            getPushTokens(playerIds).then((tokens) =>
+                sendPush(tokens, `Número: ${number} 🎱`, `Sala ${roomCode} — ${room.calledNumbers.length} cantados`)
+            )
             callback({ ok: true, number })
         } catch (err) {
             callback({ ok: false, error: err.message })
@@ -166,6 +183,11 @@ export function registerGameHandlers(io, socket) {
 
             io.to(roomCode).emit('game:bingo-claimed', { player: userName, valid: true })
             io.to(roomCode).emit('game:ended', { winners: [userName], room: room.toObject() })
+
+            const playerIds = room.players.map((p) => p.userId)
+            getPushTokens(playerIds).then((tokens) =>
+                sendPush(tokens, `¡Bingo! 🎉 Ganó ${userName}`, `Sala ${roomCode} terminada`)
+            )
             callback({ ok: true })
         } catch (err) {
             callback({ ok: false, error: err.message })

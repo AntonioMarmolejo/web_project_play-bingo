@@ -17,7 +17,14 @@ const app = express()
 const httpServer = createServer(app)
 const PORT = process.env.PORT ?? 3001
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+const ALLOWED_ORIGINS = process.env.NODE_ENV === 'production'
+  ? process.env.FRONTEND_URL?.split(',') ?? []
+  : null // null = allow all origins in development
+
+app.use(cors({
+  origin: ALLOWED_ORIGINS ?? true,
+  credentials: true,
+}))
 app.use(express.json())
 
 // Sirve los archivos subidos (en producción usar Cloudinary)
@@ -31,7 +38,7 @@ app.get('/api/health', (_, res) => res.json({ ok: true, ts: Date.now() }))
 
 // ── Socket.io ─────────────────────────────────────────
 const io = new Server(httpServer, {
-  cors: { origin: 'http://localhost:5173', credentials: true },
+  cors: { origin: ALLOWED_ORIGINS ?? true, credentials: true },
 })
 
 // Autenticación por JWT en el handshake

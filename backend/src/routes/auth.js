@@ -74,4 +74,21 @@ router.get('/me', async (req, res) => {
   }
 })
 
+// PATCH /api/auth/push-token  — guarda el Expo push token del dispositivo
+router.patch('/push-token', async (req, res) => {
+  const header = req.headers.authorization
+  if (!header?.startsWith('Bearer ')) return res.status(401).json({ error: 'Sin token.' })
+
+  const { pushToken } = req.body
+  if (!pushToken) return res.status(400).json({ error: 'pushToken requerido.' })
+
+  try {
+    const { id } = jwt.verify(header.slice(7), process.env.JWT_SECRET)
+    await User.findByIdAndUpdate(id, { pushToken })
+    res.json({ ok: true })
+  } catch {
+    res.status(401).json({ error: 'Token inválido.' })
+  }
+})
+
 export default router
